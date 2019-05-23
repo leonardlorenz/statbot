@@ -25,7 +25,7 @@ client.on("guildDelete", guild => {
     client.user.setActivity(`Serving ${client.guilds.size} servers`);
 });
 // Initialize InfluxDB
-// 
+//
 var influx = new Influx.InfluxDB({
     host: config.influx.host,
     database: config.influx.database,
@@ -70,8 +70,9 @@ async function doRoles(message, xp) {
     xpLevels.forEach(function assignRoles(xpValue){
         if (xp >= xpValue) {
             // Embeds stuff
+            // 23.05.19 [2:06 AM] ZackW: so If user is receiving the 1000XP role, and hasn't got it yet, give embeds role
             //
-            if (xpValue == 2500 && !message.member.roles.find(role => role.name === '2500xp')) {
+            if (xpValue == 1000 && !message.member.roles.find(role => role.name === '1000xp')) {
                 if (message.guild.roles.find(role => role.name === 'embeds')) {
                     message.member.addRole(message.guild.roles.find(role => role.name === 'embeds'))
                 }
@@ -144,7 +145,7 @@ async function checkUser(message) {
             influx.writePoints([
                 {
                     measurement: 'chatMessage',
-                    tags: { 
+                    tags: {
                         author: message.author.id,
                         server: message.guild.id,
                         serverName: message.guild.name
@@ -329,7 +330,7 @@ client.on("guildMemberAdd", async member => {
     influx.writePoints([
         {
             measurement: 'chatMessage',
-            tags: { 
+            tags: {
                 author: member.id,
                 server: member.guild.id,
                 serverName: member.guild.name
@@ -346,7 +347,7 @@ client.on("guildMemberRemove", async member => {
     influx.writePoints([
         {
             measurement: 'chatMessage',
-            tags: { 
+            tags: {
                 author: member.id,
                 server: member.guild.id,
                 serverName: member.guild.name
